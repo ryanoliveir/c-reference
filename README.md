@@ -1,6 +1,6 @@
 # C — do básico aos structs
 
-Referência de consulta rápida. Cada seção tem a explicação do *porquê* antes do *como*, e exemplos curtos que podem ser copiados direto. Os exemplos usam dois assuntos recorrentes — rede (IP, porta, SSID, cabeçalho) e arquivos (caminhos, tamanhos, permissões) — apenas como matéria-prima. Nada aqui exige conhecimento prévio de nenhum dos dois.
+Referência de consulta rápida. Cada seção tem a explicação do _porquê_ antes do _como_, e exemplos curtos que podem ser copiados direto. Os exemplos usam dois assuntos recorrentes — rede (IP, porta, SSID, cabeçalho) e arquivos (caminhos, tamanhos, permissões) — apenas como matéria-prima. Nada aqui exige conhecimento prévio de nenhum dos dois.
 
 ## Índice
 
@@ -36,30 +36,30 @@ main.c --[cpp]--> main.i --[cc1]--> main.s --[as]--> main.o --[ld]--> main
 
 ### Parando em cada etapa
 
-| Flag | Para em | Saída |
-| --- | --- | --- |
-| `-E` | pré-processador | texto expandido (stdout) |
-| `-S` | compilação | `main.s` (assembly) |
-| `-c` | assembler | `main.o` (objeto) |
-| (nenhuma) | linker | executável |
+| Flag      | Para em         | Saída                    |
+| --------- | --------------- | ------------------------ |
+| `-E`      | pré-processador | texto expandido (stdout) |
+| `-S`      | compilação      | `main.s` (assembly)      |
+| `-c`      | assembler       | `main.o` (objeto)        |
+| (nenhuma) | linker          | executável               |
 
 Use `gcc -E main.c | less` quando uma macro se comportar de forma estranha: você vê exatamente o que o compilador viu. Use `-S` quando quiser entender o que uma otimização fez.
 
 ### Flags que valem a pena memorizar
 
-| Flag | Para quê |
-| --- | --- |
-| `-Wall -Wextra` | liga os avisos úteis; não são "all" apesar do nome |
-| `-Werror` | trata aviso como erro — bom em CI, incômodo enquanto explora |
-| `-g` | inclui símbolos de debug, necessário para gdb/valgrind mostrarem linhas |
-| `-O0` | sem otimização (padrão); o que você debuga |
-| `-O2` | otimização normal de release |
-| `-Os` | otimiza por tamanho |
-| `-std=c11` | fixa a versão da linguagem; sem isso o default varia por compilador |
-| `-pedantic` | reclama de extensões não-padrão do GNU |
-| `-I dir` | onde procurar headers de `#include "..."` |
-| `-L dir` | onde procurar bibliotecas |
-| `-lm` | linka `libm` (matemática); a regra é `-lNOME` para `libNOME` |
+| Flag            | Para quê                                                                |
+| --------------- | ----------------------------------------------------------------------- |
+| `-Wall -Wextra` | liga os avisos úteis; não são "all" apesar do nome                      |
+| `-Werror`       | trata aviso como erro — bom em CI, incômodo enquanto explora            |
+| `-g`            | inclui símbolos de debug, necessário para gdb/valgrind mostrarem linhas |
+| `-O0`           | sem otimização (padrão); o que você debuga                              |
+| `-O2`           | otimização normal de release                                            |
+| `-Os`           | otimiza por tamanho                                                     |
+| `-std=c11`      | fixa a versão da linguagem; sem isso o default varia por compilador     |
+| `-pedantic`     | reclama de extensões não-padrão do GNU                                  |
+| `-I dir`        | onde procurar headers de `#include "..."`                               |
+| `-L dir`        | onde procurar bibliotecas                                               |
+| `-lm`           | linka `libm` (matemática); a regra é `-lNOME` para `libNOME`            |
 
 Um ponto que pega muita gente: `-lm` precisa vir **depois** dos arquivos que usam a biblioteca, porque o linker processa da esquerda para a direita e só busca o que ainda está pendente. `gcc -lm main.c` falha, `gcc main.c -lm` funciona.
 
@@ -79,15 +79,15 @@ Aspas procuram primeiro no diretório do arquivo atual, depois nos caminhos de s
 
 Em C, tipo é uma instrução de leitura: quantos bytes ler e como interpretá-los. O padrão define tamanhos **mínimos**, não exatos, e é daí que vem quase todo bug de portabilidade.
 
-| Tipo | Mínimo garantido | Típico em x86-64 |
-| --- | --- | --- |
-| `char` | 1 byte | 1 byte |
-| `short` | 2 bytes | 2 bytes |
-| `int` | 2 bytes | 4 bytes |
-| `long` | 4 bytes | 8 bytes (4 no Windows) |
-| `long long` | 8 bytes | 8 bytes |
-| `float` | — | 4 bytes |
-| `double` | — | 8 bytes |
+| Tipo        | Mínimo garantido | Típico em x86-64       |
+| ----------- | ---------------- | ---------------------- |
+| `char`      | 1 byte           | 1 byte                 |
+| `short`     | 2 bytes          | 2 bytes                |
+| `int`       | 2 bytes          | 4 bytes                |
+| `long`      | 4 bytes          | 8 bytes (4 no Windows) |
+| `long long` | 8 bytes          | 8 bytes                |
+| `float`     | —                | 4 bytes                |
+| `double`    | —                | 8 bytes                |
 
 Note `long`: 8 bytes no Linux 64-bit, 4 bytes no Windows 64-bit. Código que assume um dos dois quebra no outro.
 
@@ -141,7 +141,7 @@ printf("porta %" PRIu16 "\n", porta);
 Dois comportamentos diferentes, e a diferença importa:
 
 - **Unsigned** dá a volta de forma definida pelo padrão (aritmética módulo 2ⁿ). `uint8_t x = 255; x++;` resulta em 0, garantido.
-- **Signed** estourar é *undefined behavior*. O compilador pode assumir que nunca acontece e otimizar em cima disso. Não é teórico: `if (x + 1 < x)` pode ser eliminado do binário.
+- **Signed** estourar é _undefined behavior_. O compilador pode assumir que nunca acontece e otimizar em cima disso. Não é teórico: `if (x + 1 < x)` pode ser eliminado do binário.
 
 A armadilha mais comum é comparar signed com unsigned:
 
@@ -198,14 +198,14 @@ Prefira `const` a `#define` para constantes com valor: `const` tem tipo e escopo
 
 ### Onde cada coisa mora
 
-| Região | O que guarda | Tempo de vida |
-| --- | --- | --- |
-| `.text` | o código compilado | todo o programa |
-| `.rodata` | literais de string, `const` | todo o programa |
-| `.data` | globais e `static` inicializados | todo o programa |
-| `.bss` | globais e `static` zerados | todo o programa |
-| stack | variáveis locais, argumentos | até a função retornar |
-| heap | `malloc` | até você chamar `free` |
+| Região    | O que guarda                     | Tempo de vida          |
+| --------- | -------------------------------- | ---------------------- |
+| `.text`   | o código compilado               | todo o programa        |
+| `.rodata` | literais de string, `const`      | todo o programa        |
+| `.data`   | globais e `static` inicializados | todo o programa        |
+| `.bss`    | globais e `static` zerados       | todo o programa        |
+| stack     | variáveis locais, argumentos     | até a função retornar  |
+| heap      | `malloc`                         | até você chamar `free` |
 
 A stack é pequena e fixa — alguns MB por thread no desktop, bem menos em ambientes restritos. Declarar `uint8_t buffer[1048576]` como local é estouro de stack quase certo; como `static` ou global, vai para `.bss` e funciona.
 
@@ -219,14 +219,14 @@ C não tem tipo booleano nativo antes de C99: zero é falso, qualquer outro valo
 
 Trabalhar bit a bit é o motivo de C continuar sendo a linguagem de quem mexe com protocolo: máscara de subrede, flags de cabeçalho e permissões são todos campos de bits.
 
-| Operador | Faz | Uso típico |
-| --- | --- | --- |
-| `&` | E bit a bit | isolar bits (máscara) |
-| `\|` | OU bit a bit | ligar bits |
-| `^` | OU exclusivo | inverter bits, trocar valores |
-| `~` | complemento | inverter todos os bits |
-| `<<` | desloca à esquerda | multiplicar por 2ⁿ, montar máscara |
-| `>>` | desloca à direita | dividir por 2ⁿ |
+| Operador | Faz                | Uso típico                         |
+| -------- | ------------------ | ---------------------------------- |
+| `&`      | E bit a bit        | isolar bits (máscara)              |
+| `\|`     | OU bit a bit       | ligar bits                         |
+| `^`      | OU exclusivo       | inverter bits, trocar valores      |
+| `~`      | complemento        | inverter todos os bits             |
+| `<<`     | desloca à esquerda | multiplicar por 2ⁿ, montar máscara |
+| `>>`     | desloca à direita  | dividir por 2ⁿ                     |
 
 Os quatro idiomas que você vai usar sempre:
 
@@ -386,13 +386,13 @@ Escreva `void f(void)` e não `void f()` para funções sem parâmetros. Em C, p
 
 ### Classes de armazenamento
 
-| Palavra | Efeito |
-| --- | --- |
-| (nenhuma), local | na stack, morre no fim do bloco |
-| `static` em local | vive o programa inteiro, mas só é visível ali dentro |
+| Palavra                   | Efeito                                                |
+| ------------------------- | ----------------------------------------------------- |
+| (nenhuma), local          | na stack, morre no fim do bloco                       |
+| `static` em local         | vive o programa inteiro, mas só é visível ali dentro  |
 | `static` em global/função | símbolo privado ao arquivo `.c` — não entra no linker |
-| `extern` | "isto existe em outro arquivo", declara sem definir |
-| `register` | dica obsoleta, o compilador ignora |
+| `extern`                  | "isto existe em outro arquivo", declara sem definir   |
+| `register`                | dica obsoleta, o compilador ignora                    |
 
 `static` tem dois significados diferentes dependendo de onde aparece, e isso confunde muita gente:
 
@@ -660,16 +660,16 @@ Declare literais como `const char *` para que o compilador pegue esse erro.
 
 ### Funções de `string.h`
 
-| Função | O que faz | Cuidado |
-| --- | --- | --- |
-| `strlen(s)` | comprimento sem o `\0` | percorre até achar o zero; O(n) |
-| `strcpy(d, s)` | copia | **sem limite** — estoura o destino |
-| `strncpy(d, s, n)` | copia até n | pode não terminar em `\0` |
-| `strcat(d, s)` | concatena | mesmo problema de `strcpy` |
-| `strcmp(a, b)` | compara | retorna 0 se iguais, não 1 |
-| `memcpy(d, s, n)` | copia n bytes | regiões não podem se sobrepor |
-| `memmove(d, s, n)` | copia n bytes | seguro com sobreposição |
-| `memset(p, c, n)` | preenche n bytes | `c` é convertido a `unsigned char` |
+| Função             | O que faz              | Cuidado                            |
+| ------------------ | ---------------------- | ---------------------------------- |
+| `strlen(s)`        | comprimento sem o `\0` | percorre até achar o zero; O(n)    |
+| `strcpy(d, s)`     | copia                  | **sem limite** — estoura o destino |
+| `strncpy(d, s, n)` | copia até n            | pode não terminar em `\0`          |
+| `strcat(d, s)`     | concatena              | mesmo problema de `strcpy`         |
+| `strcmp(a, b)`     | compara                | retorna 0 se iguais, não 1         |
+| `memcpy(d, s, n)`  | copia n bytes          | regiões não podem se sobrepor      |
+| `memmove(d, s, n)` | copia n bytes          | seguro com sobreposição            |
+| `memset(p, c, n)`  | preenche n bytes       | `c` é convertido a `unsigned char` |
 
 Dois pontos que pegam com frequência:
 
@@ -682,7 +682,7 @@ char ssid[33];   // SSID tem no máximo 32 bytes, mais o terminador
 snprintf(ssid, sizeof ssid, "%s", entrada);   // trunca, sempre termina em '\0'
 ```
 
-`snprintf` é a ferramenta geral de montar string com segurança: ela trunca em vez de estourar e retorna quantos bytes *seriam* necessários, o que permite detectar truncamento:
+`snprintf` é a ferramenta geral de montar string com segurança: ela trunca em vez de estourar e retorna quantos bytes _seriam_ necessários, o que permite detectar truncamento:
 
 ```c
 int n = snprintf(ssid, sizeof ssid, "%s", entrada);
@@ -780,12 +780,12 @@ buf = NULL;
 
 ### As quatro funções
 
-| Função | Faz | Nota |
-| --- | --- | --- |
-| `malloc(n)` | reserva n bytes | conteúdo indefinido |
-| `calloc(qtd, tam)` | reserva e zera | detecta overflow na multiplicação |
-| `realloc(p, n)` | redimensiona | pode mover o bloco |
-| `free(p)` | devolve | `free(NULL)` é seguro e não faz nada |
+| Função             | Faz             | Nota                                 |
+| ------------------ | --------------- | ------------------------------------ |
+| `malloc(n)`        | reserva n bytes | conteúdo indefinido                  |
+| `calloc(qtd, tam)` | reserva e zera  | detecta overflow na multiplicação    |
+| `realloc(p, n)`    | redimensiona    | pode mover o bloco                   |
+| `free(p)`          | devolve         | `free(NULL)` é seguro e não faz nada |
 
 Escreva `sizeof *v` em vez de `sizeof(int)`. Se o tipo de `v` mudar depois, o `sizeof` acompanha sozinho e você não tem um bug silencioso de tamanho.
 
@@ -889,7 +889,7 @@ struct endereco b = {.ip = 0xC0A80101, .porta = 443};   // C99, prefira esta for
 a.porta = 8080;
 ```
 
-A forma com nomes de campo (*designated initializer*) não depende da ordem e sobrevive a uma reordenação futura da struct. Campos omitidos viram zero.
+A forma com nomes de campo (_designated initializer_) não depende da ordem e sobrevive a uma reordenação futura da struct. Campos omitidos viram zero.
 
 ### `typedef`
 
@@ -1038,7 +1038,7 @@ end.inteiro = 0xC0A80101;
 // end.octeto[0] é 0x01 em máquina little-endian, 0xC0 em big-endian
 ```
 
-O padrão C permite ler um membro diferente do último escrito (*type punning*), diferente de C++. Mas o resultado depende da ordem de bytes da máquina, e é justamente por isso que protocolos definem a sua própria: o que vai na rede é big-endian, o que está no seu x86 é little-endian, e converter entre os dois (`htons`, `htonl`) não é opcional.
+O padrão C permite ler um membro diferente do último escrito (_type punning_), diferente de C++. Mas o resultado depende da ordem de bytes da máquina, e é justamente por isso que protocolos definem a sua própria: o que vai na rede é big-endian, o que está no seu x86 é little-endian, e converter entre os dois (`htons`, `htonl`) não é opcional.
 
 O uso mais comum é a união marcada, o jeito de C fazer tipo-soma:
 
@@ -1100,13 +1100,13 @@ Quem inclui o header pode declarar `tabela_t *`, mas não pode acessar campos ne
 
 A divisão entre `.h` e `.c` segue uma regra só: o header é a interface, o `.c` é a implementação. Quem inclui o header precisa saber o mínimo para chamar suas funções, e nada além disso.
 
-| Vai no `.h` | Vai no `.c` |
-| --- | --- |
-| protótipos das funções públicas | corpo das funções |
-| `typedef` e structs que o usuário precisa criar | structs opacas |
-| `#define` e `enum` da interface | constantes internas |
-| `extern` de globais públicas | definição das globais |
-| — | tudo que é `static` |
+| Vai no `.h`                                     | Vai no `.c`           |
+| ----------------------------------------------- | --------------------- |
+| protótipos das funções públicas                 | corpo das funções     |
+| `typedef` e structs que o usuário precisa criar | structs opacas        |
+| `#define` e `enum` da interface                 | constantes internas   |
+| `extern` de globais públicas                    | definição das globais |
+| —                                               | tudo que é `static`   |
 
 **Nunca defina variável ou função (com corpo) num header.** Cada `.c` que o incluir gera um símbolo, e o linker reclama de definição múltipla. A exceção é `static inline`.
 
@@ -1183,7 +1183,7 @@ CFLAGS += -MMD -MP
 
 ## 10. Diagnóstico e erros comuns
 
-O segredo de depurar C é aceitar que o sintoma quase nunca está onde está a causa. Corrupção de memória quebra o programa *depois*, em outro lugar. Ferramenta boa reduz essa distância.
+O segredo de depurar C é aceitar que o sintoma quase nunca está onde está a causa. Corrupção de memória quebra o programa _depois_, em outro lugar. Ferramenta boa reduz essa distância.
 
 ### AddressSanitizer — comece por aqui
 
@@ -1208,34 +1208,34 @@ Não exige recompilar, o que o torna útil em binário de terceiro. Mais lento q
 
 Compile com `-g -O0` e rode `gdb ./programa`.
 
-| Comando | Faz |
-| --- | --- |
-| `run` (`r`) | inicia |
-| `break main.c:42` (`b`) | breakpoint em arquivo:linha |
-| `next` (`n`) | próxima linha, sem entrar em funções |
-| `step` (`s`) | próxima linha, entrando |
-| `continue` (`c`) | segue até o próximo breakpoint |
-| `print x` (`p`) | mostra o valor; `p *p`, `p v[3]`, `p s.campo` |
-| `x/16xb p` | despeja 16 bytes em hexa a partir de `p` — útil para inspecionar buffers |
-| `backtrace` (`bt`) | pilha de chamadas — o primeiro comando após um crash |
-| `frame 2` (`f`) | muda para outro nível da pilha |
-| `watch x` | para quando `x` mudar de valor |
-| `info locals` | todas as locais do frame atual |
+| Comando                 | Faz                                                                      |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `run` (`r`)             | inicia                                                                   |
+| `break main.c:42` (`b`) | breakpoint em arquivo:linha                                              |
+| `next` (`n`)            | próxima linha, sem entrar em funções                                     |
+| `step` (`s`)            | próxima linha, entrando                                                  |
+| `continue` (`c`)        | segue até o próximo breakpoint                                           |
+| `print x` (`p`)         | mostra o valor; `p *p`, `p v[3]`, `p s.campo`                            |
+| `x/16xb p`              | despeja 16 bytes em hexa a partir de `p` — útil para inspecionar buffers |
+| `backtrace` (`bt`)      | pilha de chamadas — o primeiro comando após um crash                     |
+| `frame 2` (`f`)         | muda para outro nível da pilha                                           |
+| `watch x`               | para quando `x` mudar de valor                                           |
+| `info locals`           | todas as locais do frame atual                                           |
 
 Depois de um segfault, `bt` sozinho já resolve a maioria dos casos. `watch` é a arma contra "alguém está sobrescrevendo essa variável e não sei quem".
 
 ### Traduzindo mensagens
 
-| Mensagem | O que realmente aconteceu |
-| --- | --- |
-| `implicit declaration of function 'foo'` | faltou o `#include` ou o protótipo |
-| `undefined reference to 'foo'` | erro de **linker**: o protótipo existe, o corpo não — faltou um `.c` ou uma `-l` |
-| `multiple definition of 'foo'` | definiu no header, ou compilou o mesmo `.c` duas vezes |
-| `expected ';' before ...` | o erro está na linha **anterior** |
-| `dereferencing pointer to incomplete type` | usou campos de uma struct só declarada, não definida |
-| `assignment discards 'const' qualifier` | tentou escrever através de um ponteiro `const` |
-| `control reaches end of non-void function` | falta `return` em algum caminho |
-| `Segmentation fault` | desreferenciou `NULL`, ponteiro inválido ou estourou a stack |
+| Mensagem                                   | O que realmente aconteceu                                                        |
+| ------------------------------------------ | -------------------------------------------------------------------------------- |
+| `implicit declaration of function 'foo'`   | faltou o `#include` ou o protótipo                                               |
+| `undefined reference to 'foo'`             | erro de **linker**: o protótipo existe, o corpo não — faltou um `.c` ou uma `-l` |
+| `multiple definition of 'foo'`             | definiu no header, ou compilou o mesmo `.c` duas vezes                           |
+| `expected ';' before ...`                  | o erro está na linha **anterior**                                                |
+| `dereferencing pointer to incomplete type` | usou campos de uma struct só declarada, não definida                             |
+| `assignment discards 'const' qualifier`    | tentou escrever através de um ponteiro `const`                                   |
+| `control reaches end of non-void function` | falta `return` em algum caminho                                                  |
+| `Segmentation fault`                       | desreferenciou `NULL`, ponteiro inválido ou estourou a stack                     |
 
 A distinção entre erro de compilador e erro de linker vale internalizar: `undefined reference` nunca é problema de sintaxe, é ausência de código ou de biblioteca na linha de comando.
 
@@ -1251,5 +1251,53 @@ A distinção entre erro de compilador e erro de linker vale internalizar: `unde
 
 - `man 3 printf`, `man 3 malloc`, `man 2 socket` — a documentação está instalada na sua máquina. Seção 2 é chamada de sistema, seção 3 é função de biblioteca.
 - [cppreference — seção C](https://en.cppreference.com/w/c) — a referência mais precisa e navegável do padrão.
-- *The C Programming Language* (Kernighan & Ritchie), 2ª edição — curto, denso, ainda o melhor ponto de partida. Os exercícios valem mais que o texto.
-- *Modern C*, de Jens Gustedt — gratuito e atualizado para C11/C17; bom complemento ao K&R, que é anterior a boa parte do que está neste guia.
+- _The C Programming Language_ (Kernighan & Ritchie), 2ª edição — curto, denso, ainda o melhor ponto de partida. Os exercícios valem mais que o texto.
+- _Modern C_, de Jens Gustedt — gratuito e atualizado para C11/C17; bom complemento ao K&R, que é anterior a boa parte do que está neste guia.
+
+## Recursos visuais de C
+
+### Visualizar memória (stack, heap, ponteiros)
+
+- [Python Tutor (C/C++)](https://pythontutor.com) - executa C passo a passo mostrando stack e heap
+- [Python Tutor: guia do visualizador C/C++](https://pythontutor.com/articles/c-cpp-visualizer.html)
+- [CMemoryViz](https://github.com/YheChen/CMemoryViz) - diagrama de memória com endereços, roda no navegador
+- [cpp-tutor](https://github.com/jmanoj0905/cpp-tutor) - estilo Python Tutor, roda local via Docker
+- [memory-viewer](https://github.com/arana-rs/memory-viewer) - stack, heap e ponteiros passo a passo (em espanhol)
+- [C Stack & Heap Memory Visualizer](https://circuitlabs.net/labs/c-stack-heap-memory-visualizer-learning-tool/)
+- [Memviz (VS Code)](https://marketplace.visualstudio.com/items?itemName=jakub-beranek.memviz) - memória do seu próprio programa via GDB
+
+### Cursos e explicações animadas
+
+- [Log2Base2](https://log2base2.com) - cursos animados de C e Advanced Pointers
+- [Memory Allocation, de Sam Rose](https://samwho.dev/memory-allocation/) - como malloc/free funcionam por dentro
+- [Hello Algo](https://www.hello-algo.com) - algoritmos com animações e código em C
+
+### Do C ao assembly
+
+- [Compiler Explorer](https://godbolt.org) - mostra o assembly gerado pelo seu código C
+
+## Animações e visualização de algoritmos
+
+### Plataformas com animação passo a passo
+
+- [AlgoMaster - Animações](https://algomaster.io/animations) - mais de mil animações de DSA, system design e concorrência
+- [Algorithm Visualizer](https://algorithm-visualizer.org) - código e animação lado a lado, destaca a linha em execução
+- [VisuAlgo](https://visualgo.net/en) - animações com entrada própria, pseudocódigo e quizzes
+- [Data Structure Visualizations (USFCA)](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html) - árvores, heaps e hash interativos
+- [Hello Algo](https://www.hello-algo.com) - livro aberto com animações em cada conceito
+- [Log2Base2](https://log2base2.com) - cursos totalmente animados de programação e DSA
+
+### Temas específicos
+
+- [Sorting Algorithms (Toptal)](https://www.toptal.com/developers/sorting-algorithms) - comparação animada de ordenações
+- [PathFinding.js](https://qiao.github.io/PathFinding.js/visual/) - A\*, BFS, Dijkstra em grade interativa
+- [Red Blob Games - A\*](https://www.redblobgames.com/pathfinding/a-star/introduction.html) - busca em grafos explicada visualmente
+- [Algorithm Visualizations](https://algorithm-visualizations-benjaminjohnson2204.vercel.app/) - listas ligadas e arrays animados com D3
+
+### Explicadores interativos
+
+- [samwho.dev](https://samwho.dev) - hashing, filas, balanceamento de carga, memória
+- [Bartosz Ciechanowski](https://ciechanow.ski) - hardware e conceitos técnicos com animações detalhadas
+- [Free System Design](https://freesystemdesign.com/) - monte arquiteturas arrastando componentes e simule tráfego (grátis)
+- [ByteByteGo](https://bytebytego.com) - system design com diagramas animados
+- [Brilliant](https://brilliant.org) - cursos interativos de programação e CS (pago)
